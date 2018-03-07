@@ -17,9 +17,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/token/{method}&{secret}','TokenController@getAPIToken');
+Route::get('/token','TokenController@getAPIToken');
 
-Route::get('/airport/{token}&{output}','AirportController@getAirport');
+Route::get('/airport','AirportController@getAirport');
 
-Route::get('/search_flight/{departure}&{arrival}&{date}&{ret_date}&{adult}
-            &{child}&{infant}&{token}&{version}&{output}', 'FlightController@search');
+Route::get('/search_flight', 'FlightController@search');

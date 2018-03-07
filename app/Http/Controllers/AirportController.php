@@ -18,8 +18,10 @@ class AirportController extends Controller
         //
     }
 
-    public function getAirport($token, $output){
+    public function getAirport(Request $request){
         $client = new Client(); //GuzzleHttp\Client
+        $token = $request->token;
+        $output = $request->output;
         $result = $client->get('https://api-sandbox.tiket.com/flight_api/all_airport', [
             'query' => [
                 'token' => $token,

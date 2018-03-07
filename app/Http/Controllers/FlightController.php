@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
 
 class FlightController extends Controller
 {
@@ -16,22 +18,48 @@ class FlightController extends Controller
         //
     }
 
-    public function search($departure, $arrival, $date, $ret_date, $adult, $child, $infant, $token, $version, $output){
+    public function search(Request $request){
         $client = new Client(); //GuzzleHttp\Client
-        $result = $client->get('https://api-sandbox.tiket.com/search/flight', [
-            'query' => [
-                'd' => $departure,
-                'a' => $arrival,
-                'date' => $date,
-                'ret_date' => $ret_date,
-                'adult' => $adult,
-                'child' => $child,
-                'infant' => $infant,
-                'token' => $token,
-                'v' => $version,
-                'output' => $output,
-            ]
-        ]);
+        $departure = $request->d;
+        $arrival = $request->a;
+        $date = $request->date;
+        $ret_date = $request->ret_date;
+        $adult = $request->adult;
+        $child = $request->child;
+        $infant = $request->infant;
+        $token = $request->token;
+        $version = $request->v;
+        $output = $request->output;
+        if ($ret_date){
+            $result = $client->get('https://api-sandbox.tiket.com/search/flight', [
+                'query' => [
+                    'd' => $departure,
+                    'a' => $arrival,
+                    'date' => $date,
+                    'ret_date' => $ret_date,
+                    'adult' => $adult,
+                    'child' => $child,
+                    'infant' => $infant,
+                    'token' => $token,
+                    'v' => $version,
+                    'output' => $output,
+                ]
+            ]);
+        }else{
+            $result = $client->get('https://api-sandbox.tiket.com/search/flight', [
+                'query' => [
+                    'd' => $departure,
+                    'a' => $arrival,
+                    'date' => $date,
+                    'adult' => $adult,
+                    'child' => $child,
+                    'infant' => $infant,
+                    'token' => $token,
+                    'v' => $version,
+                    'output' => $output,
+                ]
+            ]);
+        }
 
         $body = $result->getBody();
         return $body;

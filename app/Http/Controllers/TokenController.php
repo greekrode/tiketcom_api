@@ -18,12 +18,16 @@ class TokenController extends Controller
         //
     }
 
-    public function getAPIToken($method, $secret){
+    public function getAPIToken(Request $request){
         $client = new Client(); //GuzzleHttp\Client
+        $method = $request->method;
+        $secret = $request->secret;
+        $output = $request->output;
         $result = $client->get('https://api-sandbox.tiket.com/apiv1/payexpress', [
             'query' => [
                 'method' => $method,
                 'secretkey' => $secret,
+                'output' => $output,
             ]
         ]);
 
