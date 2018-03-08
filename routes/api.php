@@ -17,9 +17,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
-Route::get('/search_flight', 'FlightController@search');
-
 // Route::get('/login','CustomerController@login');
 
 // Route::post('/register','CustomerController@register');
@@ -43,4 +40,7 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     Route::get('token','TokenController@getAPIToken');
 
     Route::get('airport','AirportController@getAirport');
+    
+    Route::get('/search_flight', 'FlightController@search');
+
 });
