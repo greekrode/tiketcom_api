@@ -22,3 +22,7 @@ Route::get('/token','TokenController@getAPIToken');
 Route::get('/airport','AirportController@getAirport');
 
 Route::get('/search_flight', 'FlightController@search');
+
+Route::get('/login','CustomerController@login');
+
+Route::post('/register','CustomerController@register');
