@@ -17,12 +17,30 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/token','TokenController@getAPIToken');
-
-Route::get('/airport','AirportController@getAirport');
 
 Route::get('/search_flight', 'FlightController@search');
 
-Route::get('/login','CustomerController@login');
+// Route::get('/login','CustomerController@login');
 
-Route::post('/register','CustomerController@register');
+// Route::post('/register','CustomerController@register');
+
+// Route::post('/register','Auth\RegisterController@registered');
+
+// Route::post('/login','CustomerController@login');
+
+Route::post('register', 'AuthController@register');
+Route::post('login', 'AuthController@login');
+Route::post('recover', 'AuthController@recover');
+
+
+Route::group(['middleware' => ['jwt.auth']], function() {
+    Route::get('logout', 'AuthController@logout');
+
+    // Route::get('test', function() {
+    //     return response()->json(['foo' => 'bar']);
+    // });
+
+    Route::get('token','TokenController@getAPIToken');
+
+    Route::get('airport','AirportController@getAirport');
+});
