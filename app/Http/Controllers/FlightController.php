@@ -18,6 +18,86 @@ class FlightController extends Controller
         //
     }
 
+    public function checkUpdate(Request $request){
+        $client = new Client(); //GuzzleHttp\Client
+        $departure = $request->d;
+        $arrival = $request->a;
+        $date = $request->date;
+        $adult = $request->adult;
+        $child = $request->child;
+        $infant = $request->infant;
+        $token = $request->token;
+        $output = $request->output;
+
+        $result = $client->get('https://api-sandbox.tiket.com/ajax/mCheckFlightUpdated', [
+            'query' => [
+                'd' => $departure,
+                'a' => $arrival,
+                'date' => $date,
+                'adult' => $adult,
+                'child' => $child,
+                'infant' => $infant,
+                'token' => $token,
+                'output' => $output,
+            ]
+        ]);
+
+        $body = $result->getBody();
+        return $body;
+    }
+
+    public function getLionCaptcha(Request $request){
+        $client = new Client();
+        $token = $request->token;
+        $output = $request->output;
+
+        $result = $client->get('https://api-sandbox.tiket.com/flight_api/getLionCaptcha',[
+            'query' => [
+                'token' => $token,
+                'output' => $output,
+            ]
+        ]);
+
+        $body = $result->getBody();
+        return $body;
+    }
+
+    public function getFlightData(Request $request){
+        $client = new Client();
+        $flight_id = $request->flight_id;
+        $date = $request->date;
+        $ret_flight_id = $request->ret_flight_id;
+        $ret_date = $request->ret_date;
+        $token = $request->token;
+        $output = $request->output;
+
+
+        if ($ret_date && $ret_flight_id){
+            $result = $client->get('https://api-sandbox.tiket.com/flight_api/get_flight_data',[
+                'query' => [
+                    'flight_id' => $flight_id,
+                    'date' => $date,
+                    'ret_flight_id' => $ret_flight_id,
+                    'ret_date' => $ret_date,
+                    'token' => $token,
+                    'output' => $output,
+                ]
+            ]);
+        }else{
+            $result = $client->get('https://api-sandbox.tiket.com/flight_api/get_flight_data',[
+                'query' => [
+                    'flight_id' => $flight_id,
+                    'date' => $date,
+                    'token' => $token,
+                    'output' => $output,
+                ]
+            ]);
+        }
+
+        $body = $result->getBody();
+        return $body;
+    }
+
     public function search(Request $request){
         $client = new Client(); //GuzzleHttp\Client
         $departure = $request->d;

@@ -41,6 +41,12 @@ Route::group(['middleware' => ['jwt.auth']], function() {
 
     Route::get('airport','AirportController@getAirport');
     
-    Route::get('/search_flight', 'FlightController@search');
+    Route::get('search_flight', 'FlightController@search');
+
+    Route::get('check_update','FlightController@checkUpdate');
+
+    Route::get('lion_captcha','FlightController@getLionCaptcha');
+
+    Route::get('flight_data','FlightController@getFlightData');
 
 });
