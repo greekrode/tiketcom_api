@@ -49,4 +49,12 @@ Route::group(['middleware' => ['jwt.auth']], function() {
 
     Route::get('flight_data','FlightController@getFlightData');
 
+    Route::get('add_order','OrderController@addOrder');
+
+    Route::get('order_detail','OrderController@orderDetail');
+
+    Route::get('delete_order','OrderController@deleteOrder');
+    
+    Route::get('checkout_page/{order_id}','OrderController@checkoutPage');
+
 });
