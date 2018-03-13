@@ -29,7 +29,6 @@ Route::post('register', 'AuthController@register');
 Route::post('login', 'AuthController@login');
 Route::post('recover', 'AuthController@recover');
 
-
 Route::group(['middleware' => ['jwt.auth']], function() {
     Route::get('logout', 'AuthController@logout');
 
@@ -57,4 +56,11 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     
     Route::get('checkout_page/{order_id}','OrderController@checkoutPage');
 
+    Route::get('checkout_login','OrderController@checkoutLogin');
+
+    Route::get('check_order','OrderController@checkOrder');
+
+    Route::get('cc_payment','PaymentController@ccPayment');
+
+    Route::get('klikBCA_payment','PaymentController@klikBCA');
 });

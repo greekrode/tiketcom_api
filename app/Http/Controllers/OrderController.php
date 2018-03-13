@@ -83,4 +83,52 @@ class OrderController extends Controller
         $body = $result->getBody();
         return $body;
     }
+
+    public function checkoutLogin(Request $request){
+        $client = new Client(); //GuzzleHttp\Client
+        $salutation = $request->salutation;
+        $firstName = $request->firstName;
+        $lastName = $request->lastName;
+        $emailAddress = $request->emailAddress;
+        $phone = $request->phone;
+        $saveContinue = $request->saveContinue;
+        $token = $request->token;
+        $output = $request->output;
+
+        $result = $client->get('https://api-sandbox.tiket.com/checkout/checkout_customer', [
+            'query' => [
+                'salutation' => $salutation,
+                'firstName' => $firstName,
+                'lastName' => $lastName,
+                'emailAddress' => $emailAddress,
+                'phone'  => $phone,
+                'saveContinue' => $saveContinue,
+                'token' => $token,
+                'output' => $output
+            ]
+        ]);
+
+        $body = $result->getBody();
+        return $body;
+    }
+    
+    public function checkOrder(Request $request){
+        $client = new Client(); //GuzzleHttp\Client
+        $email = $request->email;
+        $order_id = $request->order_id;
+        $secretkey = $request->secretkey;
+        $output = $request->output;
+
+        $result = $client->get('https://api-sandbox.tiket.com/order/checkout/'.$order_id.'/IDR', [
+            'query' => [
+                'email' => $email,
+                'order_id' => $order_id,
+                'secretkey' => $secretkey,
+                'output' => $output
+            ]
+        ]);
+
+        $body = $result->getBody();
+        return $body;
+    }
 }
