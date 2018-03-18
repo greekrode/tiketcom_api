@@ -9,29 +9,33 @@ use GuzzleHttp\Client;
 
 class OrderController extends Controller
 {
-    public function addOrder(Request $request){
-        $client = new Client(); //GuzzleHttp\Client
-        $token = $request->token;
-        $flight_id = $request->flight_id;
-        $ret_flight_id = $request->ret_flight_id;
-        $lioncaptcha = $request->lioncaptcha;
-        $lionsessionid = $request->lionsessionid;
-        $adult = $request->adult;
-        $child = $request->child;
-        $conSalutation = $request->title;
-        $conFirstName = $request->firstName; //mandatory
-        $conLastName = $request->lastName; //not mandatory
-        $conPhone = $request->phone; //Don't forget to urlencode + into %2B in the GET parameter
-        $conEmailAddress = $request->email; //mandatory
-        $conOtherPhone = $request->otherPhone; //not mandatory
-        
-        $temp = (array) $request; 
-
-        for ($i = 1; $i <= $adult; $i++){
-            $ida =  $temp['ida'.$i];
-            echo $ida;
-            echo '<br>';
-        };
+    public function addOrder(Request $request){ 
+        $client = new Client(); //GuzzleHttp\Client 
+        $request->validate([ 
+            'total_adult' => 'required', 
+            'adults' => 'array|size:' . $request->total_adult, 
+            'adults.*.firstname' => 'required', 
+            'adults.*.lastname' => 'required', 
+            'adults.*.birthdate' => 'required', 
+            'adults.*.id' => 'required', 
+            'adults.*.title' => 'required|in:"Mr.","Ms.","Mrs."', 
+        ]); 
+        $query = array('adult' => $request->total_adult); 
+        //add adult  
+        foreach ($request->adults as $key => $value) { 
+            $adult = [ 
+                'firstnamea'.$key => $value['firstname'], 
+                'lastnamea'.$key => $value['lastname'], 
+                'birthdatea'.$key => $value['birthdate'], 
+                'ida'.$key => $value['id'], 
+                'titlea'.$key => $value['title'] 
+            ]; 
+            $query += $adult; 
+        } 
+        $result = $client->get('https://api-sandbox.tiket.com/order', [ 
+            'query' => $query 
+        ]); 
+        return $query;
     }
 
     public function orderDetail(Request $request){
