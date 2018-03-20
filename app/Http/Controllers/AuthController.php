@@ -85,7 +85,7 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
         
         
-        $credentials['is_verified'] = 1;
+        // $credentials['is_verified'] = 1;
         
         try {
             // attempt to verify the credentials and create a token for the user
