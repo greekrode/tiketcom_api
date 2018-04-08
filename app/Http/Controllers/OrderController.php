@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
-
+use App\Order;
+use App\OrderDetail;
+use App\Passenger;
+use Auth;
 
 class OrderController extends Controller
 {
