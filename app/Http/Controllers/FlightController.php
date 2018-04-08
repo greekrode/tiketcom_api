@@ -37,8 +37,8 @@ class FlightController extends Controller
                 'adult' => $adult,
                 'child' => $child,
                 'infant' => $infant,
-                'token' => $token,
-                'output' => $output,
+                'token' => env('TIKET_SECRET', ''),
+                'output' => env('TIKET_OUTPUT', 'json')
             ]
         ]);
 
@@ -53,8 +53,8 @@ class FlightController extends Controller
 
         $result = $client->get('https://api-sandbox.tiket.com/flight_api/getLionCaptcha',[
             'query' => [
-                'token' => $token,
-                'output' => $output,
+                'token' => env('TIKET_SECRET', ''),
+                'output' => env('TIKET_OUTPUT', 'json')
             ]
         ]);
 
@@ -79,8 +79,8 @@ class FlightController extends Controller
                     'date' => $date,
                     'ret_flight_id' => $ret_flight_id,
                     'ret_date' => $ret_date,
-                    'token' => $token,
-                    'output' => $output,
+                    'token' => env('TIKET_SECRET', ''),
+                    'output' => env('TIKET_OUTPUT', 'json')
                 ]
             ]);
         }else{
@@ -88,8 +88,8 @@ class FlightController extends Controller
                 'query' => [
                     'flight_id' => $flight_id,
                     'date' => $date,
-                    'token' => $token,
-                    'output' => $output,
+                    'token' => env('TIKET_SECRET', ''),
+                    'output' => env('TIKET_OUTPUT', 'json')
                 ]
             ]);
         }
@@ -120,9 +120,9 @@ class FlightController extends Controller
                     'adult' => $adult,
                     'child' => $child,
                     'infant' => $infant,
-                    'token' => $token,
+                    'token' => env('TIKET_SECRET', ''),
                     'v' => $version,
-                    'output' => $output,
+                    'output' => env('TIKET_OUTPUT', 'json')
                 ]
             ]);
         }else{
@@ -134,9 +134,9 @@ class FlightController extends Controller
                     'adult' => $adult,
                     'child' => $child,
                     'infant' => $infant,
-                    'token' => $token,
+                    'token' => env('TIKET_SECRET', ''),
                     'v' => $version,
-                    'output' => $output,
+                    'output' => env('TIKET_OUTPUT', 'json')
                 ]
             ]);
         }

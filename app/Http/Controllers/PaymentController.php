@@ -28,7 +28,7 @@ class PaymentController extends Controller
 
         $result = $client->get('https://api-sandbox.tiket.com/checkout/checkout_payment/3', [
             'query' => [
-                'token' => $token
+                'token' => env('TIKET_SECRET', '')
             ]
         ]);
 

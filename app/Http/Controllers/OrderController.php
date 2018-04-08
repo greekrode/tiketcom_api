@@ -45,8 +45,8 @@ class OrderController extends Controller
 
         $result = $client->get('https://api-sandbox.tiket.com/order', [
             'query' => [
-                'token' => $token,
-                'output' => $output
+                'token' => env('TIKET_SECRET', ''),
+                'output' => env('TIKET_OUTPUT', 'json')
             ]
         ]);
 
@@ -63,8 +63,8 @@ class OrderController extends Controller
         $result = $client->get('https://api-sandbox.tiket.com/order/delete_order',[
             'query' => [
                 'order_detail_id' => $order_detail_id,
-                'token' => $token,
-                'output' => $output
+                'token' => env('TIKET_SECRET', ''),
+                'output' => env('TIKET_OUTPUT', 'json')
             ]
         ]);
 
@@ -79,8 +79,8 @@ class OrderController extends Controller
 
         $result = $client->get('https://api-sandbox.tiket.com/order/checkout/'.$order_id.'/IDR', [
             'query' => [
-                'token' => $token,
-                'output' => $output
+                'token' => env('TIKET_SECRET', ''),
+                'output' => env('TIKET_OUTPUT', 'json')
             ]
         ]);
 
@@ -107,8 +107,8 @@ class OrderController extends Controller
                 'emailAddress' => $emailAddress,
                 'phone'  => $phone,
                 'saveContinue' => $saveContinue,
-                'token' => $token,
-                'output' => $output
+                'token' => env('TIKET_SECRET', ''),
+                'output' => env('TIKET_OUTPUT', 'json')
             ]
         ]);
 
@@ -128,7 +128,7 @@ class OrderController extends Controller
                 'email' => $email,
                 'order_id' => $order_id,
                 'secretkey' => $secretkey,
-                'output' => $output
+                'output' => env('TIKET_OUTPUT', 'json')
             ]
         ]);
 

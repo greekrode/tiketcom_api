@@ -27,7 +27,7 @@ class TokenController extends Controller
             'query' => [
                 'method' => $method,
                 'secretkey' => $secret,
-                'output' => $output,
+                'output' => env('TIKET_OUTPUT', 'json')
             ]
         ]);
 

@@ -24,8 +24,8 @@ class AirportController extends Controller
         $output = $request->output;
         $result = $client->get('https://api-sandbox.tiket.com/flight_api/all_airport', [
             'query' => [
-                'token' => $token,
-                'output' => $output,
+                'token' => env('TIKET_SECRET', ''),
+                'output' => env('TIKET_OUTPUT', 'json')
             ]
         ]);
 
