@@ -226,7 +226,7 @@ class OrderController extends Controller
 
         $result = $client->get('https://api-sandbox.tiket.com/order', [
             'query' => [
-                'token' => env('TIKET_SECRET', ''),
+                'token' => $token,
                 'output' => env('TIKET_OUTPUT', 'json')
             ]
         ]);
