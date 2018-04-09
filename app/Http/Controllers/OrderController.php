@@ -215,8 +215,6 @@ class OrderController extends Controller
         } else {
             return $validateresult;
         }
-
-
     }
 
     public function orderDetail(Request $request){
@@ -296,24 +294,23 @@ class OrderController extends Controller
         $body = $result->getBody();
         return $body;
     }
-    
-    public function checkOrder(Request $request){
-        $client = new Client(); //GuzzleHttp\Client
-        $email = $request->email;
-        $order_id = $request->order_id;
-        $secretkey = $request->secretkey;
-        $output = $request->output;
 
-        $result = $client->get('https://api-sandbox.tiket.com/order/checkout/'.$order_id.'/IDR', [
-            'query' => [
-                'email' => $email,
-                'order_id' => $order_id,
-                'secretkey' => $secretkey,
-                'output' => env('TIKET_OUTPUT', 'json')
-            ]
-        ]);
 
-        $body = $result->getBody();
-        return $body;
+    public function orderHistory(Request $request, $id){
+        $history = Order::find($id);
+        if ($history == null) {
+            echo "U FAILED. PLS TRY HARD !!!";
+        }else {
+            return response()->json($history->toArray());
+        }
+    }
+
+    public function orderDetailHistory($id){
+        $history = OrderDetail::find($id);
+        if ($history == null) {
+            echo "U FAILED. PLS TRY HARD !!!";
+        }else {
+            return response()->json($history->toArray());
+        }
     }
 }

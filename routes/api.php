@@ -63,4 +63,8 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     Route::get('cc_payment','PaymentController@ccPayment');
 
     Route::get('klikBCA_payment','PaymentController@klikBCA');
+
+    Route::get('order_history/{id}','OrderController@orderHistory');
+
+    Route::get('orderdetail_history/{id}','OrderController@orderDetailHistory');
 });
