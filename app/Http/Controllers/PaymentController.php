@@ -8,7 +8,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\TransferStats;
 
 class PaymentController extends Controller
-{
+{   
     public function ccPayment(Request $request){
         $client = new Client(); //GuzzleHttp\Client
         $checkouttoken = $request->checkouttoken;
@@ -23,7 +23,9 @@ class PaymentController extends Controller
         ]);
 
         $body = $result->getBody()->getContents();
-        return $url;
+        return response()->json([
+            'url' => (utf8_encode($url))
+        ]);
     }
 
     public function klikBCA(Request $request){
@@ -39,4 +41,7 @@ class PaymentController extends Controller
         $body = $result->getBody();
         return $body;
     }
+
+
+    
 }
