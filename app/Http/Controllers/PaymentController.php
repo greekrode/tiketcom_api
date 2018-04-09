@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
+use GuzzleHttp\TransferStats;
 
 class PaymentController extends Controller
 {
@@ -15,11 +16,14 @@ class PaymentController extends Controller
         $result = $client->get('http://sandbox.tiket.com/payment/checkout_payment', [
             'query' => [
                 'checkouttoken' => $checkouttoken
-            ]
+            ],
+            'on_stats' => function (TransferStats $stats) use (&$url) {
+                $url = $stats->getEffectiveUri();
+            }
         ]);
 
-        $body = $result->getBody();
-        return $body;
+        $body = $result->getBody()->getContents();
+        return $url;
     }
 
     public function klikBCA(Request $request){
