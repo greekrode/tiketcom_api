@@ -32,10 +32,6 @@ Route::post('recover', 'AuthController@recover');
 Route::group(['middleware' => ['jwt.auth']], function() {
     Route::get('logout', 'AuthController@logout');
 
-    // Route::get('test', function() {
-    //     return response()->json(['foo' => 'bar']);
-    // });
-
     Route::get('token','TokenController@getAPIToken');
 
     Route::get('airport','AirportController@getAirport');
@@ -67,4 +63,6 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     Route::get('order_history/{id}','OrderController@orderHistory');
 
     Route::get('orderdetail_history/{id}','OrderController@orderDetailHistory');
+
+    Route::post('edit_user/{id}','UserController@store');
 });
