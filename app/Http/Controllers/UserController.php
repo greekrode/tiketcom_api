@@ -19,4 +19,15 @@ class UserController extends Controller
 
         return response()->json(['success'=>'True']);
     }
+
+    public function show($id)
+    {
+        $user = User::find($id);
+        if ($user == null) {
+          echo "No data with the specified description";
+        }
+        else {
+        return response()->json($user->toArray());
+        }
+    }
 }

@@ -65,4 +65,6 @@ Route::group(['middleware' => ['jwt.auth']], function() {
     Route::get('orderdetail_history/{id}','OrderController@orderDetailHistory');
 
     Route::post('edit_user/{id}','UserController@store');
+
+    Route::get('view_user/{id}','UserController@show');
 });
