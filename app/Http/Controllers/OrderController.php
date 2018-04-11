@@ -161,11 +161,11 @@ class OrderController extends Controller
             $result = $client->get('https://api-sandbox.tiket.com/checkout/checkout_customer/' , [
                 'query' => [
                     'token' => $token,
-                    'salutation' => $request->title,
-                    'firstName' => $request->firstName,
-                    'lastName' => $request->lastName,
-                    'phone' => $request->phone,
-                    'emailAddress' => $request->email,
+                    'salutation' => $request->conSalutation,
+                    'firstName' => $request->conFirstName,
+                    'lastName' => $request->conLastName,
+                    'phone' => $request->conPhone,
+                    'emailAddress' => $request->conEmailAddress,
                     'saveContinue' => 2
                 ]
             ]);
