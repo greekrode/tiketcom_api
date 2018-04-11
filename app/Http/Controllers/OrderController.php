@@ -14,37 +14,6 @@ class OrderController extends Controller
 {
     public function addOrder(Request $request){
         $client = new Client(); //GuzzleHttp\Client
-        //add child
-        // if ($request->total_child){
-        //     foreach ($request->childs as $key => $value) {
-        //         $key++;
-        //         $child = [
-        //             'firstnamec'.$key => $value['firstname'],
-        //             'lastnamec'.$key => $value['lastname'],
-        //             'birthdatec'.$key => $value['birthdate'],
-        //             'idc'.$key => $value['id'],
-        //             'titlec'.$key => $value['title'],
-        //             'passportnationalityc'.$key => $value['passportnationality'],
-        //             'dcheckinbaggagec1'.$key => $value['dcheckinbaggage']
-        //         ];
-        //         $query += $child;
-        //     }
-        // }
-
-        // //add infant
-        // if ($request->total_infant){
-        //     foreach ($request->infants as $key => $value) {
-        //         $key++;
-        //         $child = [
-        //             'firstnamei'.$key => $value['firstname'],
-        //             'lastnamei'.$key => $value['lastname'],
-        //             'birthdatei'.$key => $value['birthdate'],
-        //             'idi'.$key => $value['id'],
-        //             'parenti'.$key => $value['parent']
-        //         ];
-        //         $query += $child;
-        //     }
-        // }
 
         $result = $client->get('https://api-sandbox.tiket.com/apiv1/payexpress', [
             'query' => [
@@ -54,10 +23,6 @@ class OrderController extends Controller
             ]
         ]);
         $token = json_decode($result->getBody()->getContents(), true)['token'];
-        $query += [
-            'token' => $token, 
-            'output' => env('TIKET_OUTPUT', 'json'), 
-        ];
 
         $validateresult = $client->get('https://api-sandbox.tiket.com/order/add/flight', [
             'query' => [
