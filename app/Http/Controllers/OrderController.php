@@ -14,92 +14,37 @@ class OrderController extends Controller
 {
     public function addOrder(Request $request){
         $client = new Client(); //GuzzleHttp\Client
-        $request->validate([
-            'total_adult' => 'required',
-            'adults' => 'array|size:' . $request->total_adult,
-            'adults.*.firstname' => 'required',
-            'adults.*.lastname' => 'required',
-            'adults.*.birthdate' => 'required',
-            'adults.*.id' => 'required',
-            'adults.*.title' => 'required|in:"Tuan","Nyonya"',
-            'childs' => 'array|size:' . $request->total_child,
-            'childs.*.firstname' => 'required',
-            'childs.*.lastname' => 'required',
-            'childs.*.birthdate' => 'required',
-            'childs.*.title' => 'required|in:"Mstr.","Miss."',
-            'infants' => 'array|size:' . $request->total_infant,
-            'infants.*.firstname' => 'required',
-            'infants.*.lastname' => 'required',
-            'infants.*.birthdate' => 'required',
-            'infants.*.parent' => 'required',
-            'title' => 'required|in:"Mr.","Ms.","Mrs."',
-            'firstName' => 'required',
-            'lastName' => 'required',
-            'phone' => 'required',
-            'email' => 'required|email'
-        ]);
-        $query = [
-            'adult' => $request->total_adult, 
-            'child' => $request->total_child,
-            'infant' => $request->total_infant,
-            'flight_id' => $request->flight_id,
-            'lioncaptcha' => $request->lioncaptcha,
-            'lionsessionid' => $request->lionsessionid,
-            'conSalutation' => $request->title,
-            'conFirstName' => $request->firstName,
-            'conLastName' => $request->lastName,
-            'conPhone' => $request->phone,
-            'conEmailAddress' => $request->email
-        ];
-
-        if($request->ret_flight_id) $query += ['ret_flight_id' => $request->ret_flight_id];
-
-        //add adult 
-        foreach ($request->adults as $key => $value) {
-            $key++;
-            $adult = [
-                'firstnamea'.$key => $value['firstname'],
-                'lastnamea'.$key => $value['lastname'],
-                'birthdatea'.$key => $value['birthdate'],
-                'ida'.$key => $value['id'],
-                'titlea'.$key => $value['title'],
-                'passportnationalitya'.$key => $value['passportnationality'],
-                'dcheckinbaggagea1'.$key => $value['dcheckinbaggage']
-            ];
-            $query += $adult;
-        }
-
         //add child
-        if ($request->total_child){
-            foreach ($request->childs as $key => $value) {
-                $key++;
-                $child = [
-                    'firstnamec'.$key => $value['firstname'],
-                    'lastnamec'.$key => $value['lastname'],
-                    'birthdatec'.$key => $value['birthdate'],
-                    'idc'.$key => $value['id'],
-                    'titlec'.$key => $value['title'],
-                    'passportnationalityc'.$key => $value['passportnationality'],
-                    'dcheckinbaggagec1'.$key => $value['dcheckinbaggage']
-                ];
-                $query += $child;
-            }
-        }
+        // if ($request->total_child){
+        //     foreach ($request->childs as $key => $value) {
+        //         $key++;
+        //         $child = [
+        //             'firstnamec'.$key => $value['firstname'],
+        //             'lastnamec'.$key => $value['lastname'],
+        //             'birthdatec'.$key => $value['birthdate'],
+        //             'idc'.$key => $value['id'],
+        //             'titlec'.$key => $value['title'],
+        //             'passportnationalityc'.$key => $value['passportnationality'],
+        //             'dcheckinbaggagec1'.$key => $value['dcheckinbaggage']
+        //         ];
+        //         $query += $child;
+        //     }
+        // }
 
-        //add infant
-        if ($request->total_infant){
-            foreach ($request->infants as $key => $value) {
-                $key++;
-                $child = [
-                    'firstnamei'.$key => $value['firstname'],
-                    'lastnamei'.$key => $value['lastname'],
-                    'birthdatei'.$key => $value['birthdate'],
-                    'idi'.$key => $value['id'],
-                    'parenti'.$key => $value['parent']
-                ];
-                $query += $child;
-            }
-        }
+        // //add infant
+        // if ($request->total_infant){
+        //     foreach ($request->infants as $key => $value) {
+        //         $key++;
+        //         $child = [
+        //             'firstnamei'.$key => $value['firstname'],
+        //             'lastnamei'.$key => $value['lastname'],
+        //             'birthdatei'.$key => $value['birthdate'],
+        //             'idi'.$key => $value['id'],
+        //             'parenti'.$key => $value['parent']
+        //         ];
+        //         $query += $child;
+        //     }
+        // }
 
         $result = $client->get('https://api-sandbox.tiket.com/apiv1/payexpress', [
             'query' => [
@@ -115,8 +60,23 @@ class OrderController extends Controller
         ];
 
         $validateresult = $client->get('https://api-sandbox.tiket.com/order/add/flight', [
-            'query' => $query
+            'query' => [
+                'token' => $token,
+                'flight_id' => $request->flight_id,
+                'adult' => $request->adult,
+                'conSalutation' => $request->conSalutation,
+                'conFirstName' => $request->conFirstName,
+                'conLastName' => $request->conLastName,
+                'conPhone' => $request->conPhone,
+                'conEmailAddress' => $request->conEmailAddress,
+                'firstnamea1' => $request->firstnamea1,
+                'lastnamea1' => $request->lastnamea1,
+                'birthdatea1' => $request->birthdatea1,
+                'ida1' => $request->ida1,
+                'titlea1' => $request->titlea1
+            ]
         ]);
+        $validateresult = json_decode($validateresult->getBody()->getContents(), true);
         
         $result = $client->get('https://api-sandbox.tiket.com/order', [
             'query' => [
@@ -166,7 +126,6 @@ class OrderController extends Controller
                 $orderDetail->subtotal_and_charge = $detail['subtotal_and_charge'];
                 $orderDetail->save();
 
-                if($request->total_adult) {
                     foreach ($detail['detail']['passengers']['adult'] as $person) {
                         $passenger = new Passenger();
                         $passenger->orderDetail()->associate($orderDetail);
@@ -192,7 +151,6 @@ class OrderController extends Controller
                         $passenger->check_in_baggage_unit = $person['check_in_baggage_unit'];
                         $passenger->save();
                     }
-                }
             }
             $orderId = $result['myorder']['order_id'];
             $result = $client->get('https://api-sandbox.tiket.com/order/checkout/' . $orderId . '/IDR' , [
