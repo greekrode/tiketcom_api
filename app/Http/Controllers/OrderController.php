@@ -38,11 +38,11 @@ class OrderController extends Controller
                 'lastnamea1' => $request->lastnamea1,
                 'birthdatea1' => $request->birthdatea1,
                 'ida1' => $request->ida1,
-                'titlea1' => $request->titlea1
+                'titlea1' => $request->titlea1,
+                'output' => env('TIKET_OUTPUT', 'json')
             ]
         ]);
         $validateresult = json_decode($validateresult->getBody()->getContents(), true);
-        
         $result = $client->get('https://api-sandbox.tiket.com/order', [
             'query' => [
                 'token' => $token,
@@ -136,7 +136,7 @@ class OrderController extends Controller
             ]);
             return $order;
         } else {
-            return $validateresult;
+            return $validatresult;
         }
     }
 
