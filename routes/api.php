@@ -48,7 +48,7 @@ Route::group(['middleware' => ['jwt.auth']], function() {
 
     Route::get('order_detail','OrderController@orderDetail');
 
-    Route::get('delete_order','OrderController@deleteOrder');
+    Route::delete('delete_order/{id}','OrderController@deleteOrder');
     
     Route::get('checkout_page/{order_id}','OrderController@checkoutPage');
 

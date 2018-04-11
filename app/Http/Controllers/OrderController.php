@@ -191,22 +191,12 @@ class OrderController extends Controller
         return $body;
     }
 
-    public function deleteOrder(Request $request){
-        $client = new Client(); //GuzzleHttp\Client
-        $order_detail_id = $request->order_detail_id;
-        $token = $request->token;
-        $output = $request->output;
+    public function deleteOrder($id){
+        $delete = Order::find($id);
+        $delete->delete();
 
-        $result = $client->get('https://api-sandbox.tiket.com/order/delete_order',[
-            'query' => [
-                'order_detail_id' => $order_detail_id,
-                'token' => env('TIKET_SECRET', ''),
-                'output' => env('TIKET_OUTPUT', 'json')
-            ]
-        ]);
-
-        $body = $result->getBody();
-        return $body;
+        $delete = Order::get();
+        return response()->json($delete->toArray());
     }
 
     public function checkoutPage(Request $request, $order_id){
