@@ -157,7 +157,7 @@ class OrderController extends Controller
     }
 
     public function deleteOrder($id){
-        $delete = Order::find($id);
+        $delete = Order::where('user_id',$id);
         $delete->delete();
 
         $delete = Order::get();
@@ -210,19 +210,21 @@ class OrderController extends Controller
 
 
     public function orderHistory(Request $request, $id){
-        $history = Order::find($id);
+        $history = Order::where('user_id',$id);
         if ($history == null) {
             echo "U FAILED. PLS TRY HARD !!!";
         }else {
+            $history = Order::get();
             return response()->json($history->toArray());
         }
     }
 
     public function orderDetailHistory($id){
-        $history = OrderDetail::find($id);
+        $history = OrderDetail::where('user_id',$id);
         if ($history == null) {
             echo "U FAILED. PLS TRY HARD !!!";
         }else {
+            $history = OrderDetail::get();
             return response()->json($history->toArray());
         }
     }
